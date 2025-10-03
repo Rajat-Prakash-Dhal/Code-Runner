@@ -89,9 +89,10 @@
             outputDiv.className = 'fira-code w-full bg-gray-900 rounded-lg p-4 text-sm min-h-[100px] whitespace-pre-wrap break-all text-gray-400';
 
             try {
-                // IMPORTANT: In a real deployment, you would replace 'http://localhost:3000'
-                // with your actual backend server's URL.
-                const response = await fetch('http://localhost:3000/execute', {
+                // This URL now points to your live AWS Lightsail server
+                const apiUrl = 'http://13.203.239.26:3000/execute'; 
+                
+                const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -126,3 +127,4 @@
     </script>
 </body>
 </html>
+
