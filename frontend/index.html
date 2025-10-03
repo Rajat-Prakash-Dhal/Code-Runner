@@ -89,9 +89,7 @@
             outputDiv.className = 'fira-code w-full bg-gray-900 rounded-lg p-4 text-sm min-h-[100px] whitespace-pre-wrap break-all text-gray-400';
 
             try {
-                // *** IMPORTANT CORRECTION ***
-                // The API URL must point to your server's IP. The Mixed Content
-                // error is now expected until we complete the HTTPS guide.
+                
                 const apiUrl = 'https://code-runner.ddns.net/execute';
 
                 const response = await fetch(apiUrl, {
