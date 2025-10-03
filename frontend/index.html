@@ -89,11 +89,10 @@
             outputDiv.className = 'fira-code w-full bg-gray-900 rounded-lg p-4 text-sm min-h-[100px] whitespace-pre-wrap break-all text-gray-400';
 
             try {
-                // *** IMPORTANT CHANGE HERE ***
-                // We're now talking to Nginx on the default HTTP port.
-                // NOTE: This will still cause a Mixed Content error. The next step will be to add HTTPS.
-                // For now, let's confirm the proxy works.
-                const apiUrl = `http://${window.location.hostname}/execute`;
+                // *** IMPORTANT CORRECTION ***
+                // The API URL must point to your server's IP. The Mixed Content
+                // error is now expected until we complete the HTTPS guide.
+                const apiUrl = 'http://13.203.239.26/execute';
 
                 const response = await fetch(apiUrl, {
                     method: 'POST',
