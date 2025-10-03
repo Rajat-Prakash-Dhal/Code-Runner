@@ -1,0 +1,16 @@
+{
+  "name": "code-runner-backend",
+  "version": "1.0.0",
+  "description": "Backend API for executing code in Docker containers.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dockerode": "^4.0.2",
+    "express": "^4.19.2"
+  }
+}
