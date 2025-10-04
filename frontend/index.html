@@ -1,105 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code-Runner</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code-Runner</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Static Code Runner</h1>
-        <p class="subtitle">Execute Python and JavaScript code securely in the cloud.</p>
+  <div class="container">
+    <h1>Static Code Runner</h1>
+    <p class="subtitle">Execute Python and JavaScript code securely in the cloud.</p>
 
-        <div>
-            <div class="form-group">
-                <label for="language">Language</label>
-                <select id="language">
-                    <option value="python" selected>Python</option>
-                    <option value="javascript">JavaScript</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="codeInput">Your Code</label>
-                <textarea id="codeInput" rows="15" class="fira-code" placeholder="print('Hello, Docker!')"></textarea>
-            </div>
-
-            <button id="runButton">Run Code</button>
-
-            <div class="form-group">
-                <label for="output">Output</label>
-                <pre id="output" class="fira-code text-gray"></pre>
-            </div>
+    <div class="main-content">
+      <!-- Left Side: Code Editor -->
+      <div class="editor-section">
+        <div class="form-group">
+          <label for="language">Language</label>
+          <select id="language">
+            <option value="python" selected>Python</option>
+            <option value="javascript">JavaScript</option>
+          </select>
         </div>
+
+        <div class="form-group">
+          <label for="codeInput">Your Code</label>
+          <textarea
+            id="codeInput"
+            rows="15"
+            class="fira-code"
+            placeholder="print('Hello, Docker!')"
+          ></textarea>
+        </div>
+
+        <button id="runButton" class="sticky-run">Run Code</button>
+      </div>
+
+      <!-- Right Side: Output -->
+      <div class="output-section">
+        <div class="form-group">
+          <label for="output">Output</label>
+          <pre id="output" class="fira-code text-gray"></pre>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <footer>
-        <p>Powered by Docker & Node.js - AWS Lightsail</p>
-        <p>&copy; Rajat Prakash Dhal</p>
-    </footer>
+  <footer>
+    <p>Powered by Docker & Node.js — AWS Lightsail</p>
+    <p>&copy; Rajat Prakash Dhal</p>
+  </footer>
 
-    <script>
-        const runButton = document.getElementById('runButton');
-        const codeInput = document.getElementById('codeInput');
-        const languageSelect = document.getElementById('language');
-        const outputDiv = document.getElementById('output');
+  <script>
+    const runButton = document.getElementById('runButton');
+    const codeInput = document.getElementById('codeInput');
+    const languageSelect = document.getElementById('language');
+    const outputDiv = document.getElementById('output');
 
+    // Default code per language
+    codeInput.value = "print('Hello from a Docker container!')";
+
+    languageSelect.addEventListener('change', () => {
+      if (languageSelect.value === 'python') {
         codeInput.value = "print('Hello from a Docker container!')";
+      } else if (languageSelect.value === 'javascript') {
+        codeInput.value = "console.log('Hello from a Docker container!');";
+      }
+    });
 
-        languageSelect.addEventListener('change', () => {
-            if (languageSelect.value === 'python') {
-                codeInput.value = "print('Hello from a Docker container!')";
-            } else if (languageSelect.value === 'javascript') {
-                codeInput.value = "console.log('Hello from a Docker container!');";
-            }
+    // Run Code button handler
+    runButton.addEventListener('click', async () => {
+      const code = codeInput.value;
+      const language = languageSelect.value;
+
+      if (!code.trim()) {
+        outputDiv.textContent = 'Please enter some code to run.';
+        outputDiv.className = 'fira-code text-yellow';
+        return;
+      }
+
+      runButton.disabled = true;
+      runButton.textContent = 'Executing...';
+      outputDiv.textContent = 'Running your code...';
+      outputDiv.className = 'fira-code text-gray';
+
+      try {
+        const apiUrl = 'https://code-runner.ddns.net/execute';
+
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ language, code })
         });
 
-        runButton.addEventListener('click', async () => {
-            const code = codeInput.value;
-            const language = languageSelect.value;
+        const result = await response.json();
 
-            if (!code.trim()) {
-                outputDiv.textContent = 'Please enter some code to run.';
-                outputDiv.className = 'fira-code text-yellow';
-                return;
-            }
+        if (response.ok) {
+          outputDiv.textContent = result.output;
+          outputDiv.className = 'fira-code text-green';
+        } else {
+          outputDiv.textContent = result.error || 'An unknown error occurred.';
+          outputDiv.className = 'fira-code text-red';
+        }
 
-            runButton.disabled = true;
-            runButton.textContent = 'Executing...';
-            outputDiv.textContent = 'Running your code...';
-            outputDiv.className = 'fira-code text-gray';
-
-            try {
-                const apiUrl = 'https://code-runner.ddns.net/execute';
-
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ language, code })
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    outputDiv.textContent = result.output;
-                    outputDiv.className = 'fira-code text-green';
-                } else {
-                    outputDiv.textContent = result.error || 'An unknown error occurred.';
-                    outputDiv.className = 'fira-code text-red';
-                }
-
-            } catch (error) {
-                console.error('Error executing code:', error);
-                outputDiv.textContent = 'Failed to connect to the execution server. Please try again later.';
-                outputDiv.className = 'fira-code text-red';
-            } finally {
-                runButton.disabled = false;
-                runButton.textContent = 'Run Code';
-            }
-        });
-    </script>
+      } catch (error) {
+        console.error('Error executing code:', error);
+        outputDiv.textContent =
+          'Failed to connect to the execution server. Please try again later.';
+        outputDiv.className = 'fira-code text-red';
+      } finally {
+        runButton.disabled = false;
+        runButton.textContent = 'Run Code';
+      }
+    });
+  </script>
 </body>
 </html>

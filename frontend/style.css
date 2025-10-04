@@ -1,186 +1,193 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
-
+/* ===== Global Styles ===== */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body {
-    font-family: 'Inter', sans-serif;
-    background-color: #111827;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 1rem;
+html, body {
+  height: 100%;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  background: #0f172a; /* dark navy background */
+  color: #f8fafc;
+  display: flex;
+  flex-direction: column;
 }
 
-.fira-code {
-    font-family: 'Fira Code', monospace;
-}
-
-.container {
-    width: 100%;
-    max-width: 56rem;
-    background-color: #1f2937;
-    border-radius: 1rem;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    padding: 1.5rem;
-}
-
-@media (min-width: 768px) {
-    .container {
-        padding: 2rem;
-    }
-}
-
+/* ===== Typography ===== */
 h1 {
-    font-size: 1.875rem;
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 0.5rem;
-    color: #22d3ee;
-}
-
-@media (min-width: 768px) {
-    h1 {
-        font-size: 2.25rem;
-    }
+  font-size: 2rem;
+  text-align: center;
+  color: #38bdf8; /* cyan accent */
+  margin-bottom: 0.5rem;
 }
 
 .subtitle {
-    text-align: center;
-    color: #9ca3af;
-    margin-bottom: 1.5rem;
+  text-align: center;
+  color: #94a3b8;
+  margin-bottom: 2rem;
 }
 
+/* ===== Container ===== */
+.container {
+  max-width: 900px;
+  width: 90%;
+  background: #1e293b;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  flex-grow: 1;
+}
+
+/* ===== Form ===== */
 .form-group {
-    margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 label {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #d1d5db;
-    margin-bottom: 0.5rem;
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #e2e8f0;
 }
 
-select {
-    width: 100%;
-    background-color: #374151;
-    border: 1px solid #4b5563;
-    color: white;
-    border-radius: 0.5rem;
-    padding: 0.75rem;
-    transition: all 0.2s;
-    font-family: 'Inter', sans-serif;
-}
-
-select:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #22d3ee;
-    border-color: #22d3ee;
-}
-
+select,
 textarea {
-    width: 100%;
-    background-color: #111827;
-    border: 1px solid #4b5563;
-    color: white;
-    border-radius: 0.5rem;
-    padding: 1rem;
-    font-size: 0.875rem;
-    transition: all 0.2s;
-    resize: vertical;
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 8px;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-size: 1rem;
+  resize: vertical;
 }
 
+select:focus,
 textarea:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #22d3ee;
-    border-color: #22d3ee;
+  outline: 2px solid #38bdf8;
 }
 
-button {
-    width: 100%;
-    background-color: #0891b2;
-    color: white;
-    font-weight: 700;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    font-size: 1.125rem;
-    transition: all 0.3s ease-in-out;
-    border: none;
-    cursor: pointer;
-    font-family: 'Inter', sans-serif;
+/* ===== Run Button ===== */
+#runButton {
+  width: 100%;
+  padding: 0.9rem;
+  font-size: 1.1rem;
+  background: linear-gradient(90deg, #2563eb, #38bdf8);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: 0.25s ease-in-out;
+  font-weight: 600;
 }
 
-button:hover:not(:disabled) {
-    background-color: #0e7490;
-    transform: scale(1.02);
+#runButton:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
 }
 
-button:focus {
-    outline: none;
-    box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.5);
+#runButton:disabled {
+  background: #334155;
+  cursor: not-allowed;
 }
 
-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
+/* ===== Output Box ===== */
 pre {
-    width: 100%;
-    background-color: #111827;
-    border-radius: 0.5rem;
-    padding: 1rem;
-    font-size: 0.875rem;
-    min-height: 100px;
-    white-space: pre-wrap;
-    word-break: break-all;
-    transition: all 0.2s;
-    border: 1px solid #374151;
+  background: #0f172a;
+  border-radius: 8px;
+  padding: 1rem;
+  min-height: 120px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
-.text-green {
-    color: #4ade80;
-}
-
-.text-red {
-    color: #f87171;
-}
-
-.text-yellow {
-    color: #facc15;
-}
-
-.text-gray {
-    color: #9ca3af;
-}
-
+/* ===== Footer ===== */
 footer {
-    text-align: center;
-    color: #6b7280;
-    margin-top: 2rem;
-    padding: 1rem;
-    font-size: 0.875rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #94a3b8;
+  padding: 1.5rem 0;
+  background: #1e293b;
+  border-top: 1px solid #334155;
 }
 
 footer p {
-    margin: 0.25rem 0;
+  margin: 0.3rem 0;
 }
 
-footer a {
-    color: #22d3ee;
-    text-decoration: none;
-    transition: color 0.2s;
+/* ===== Font and Text Colors ===== */
+.fira-code {
+  font-family: 'Fira Code', monospace;
 }
 
-footer a:hover {
-    color: #06b6d4;
+.text-gray {
+  color: #94a3b8;
+}
+
+.text-green {
+  color: #10b981;
+}
+
+.text-red {
+  color: #ef4444;
+}
+
+.text-yellow {
+  color: #facc15;
+}
+
+/* ===== Responsive Design ===== */
+
+/* Tablets */
+@media (max-width: 900px) {
+  .container {
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  textarea {
+    font-size: 0.95rem;
+  }
+}
+
+/* Phones */
+@media (max-width: 600px) {
+  body {
+    background: #0f172a;
+  }
+
+  .container {
+    width: 95%;
+    padding: 1.2rem;
+    margin-top: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+
+  #runButton {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+
+  textarea {
+    min-height: 220px;
+  }
+
+  footer {
+    font-size: 0.8rem;
+    padding: 1rem 0;
+  }
 }
