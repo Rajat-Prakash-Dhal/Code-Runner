@@ -10,7 +10,7 @@ const docker = new Docker();
 app.use(express.json());
 app.use(cors()); // Enable CORS for all routes
 
-// A map to associate languages with their respective Docker images
+// A map to associate languages with their respective official Docker images
 const languageImageMap = {
     python: 'python:3.9-slim',
     javascript: 'node:18-alpine'
@@ -29,6 +29,7 @@ app.post('/execute', async (req, res) => {
     }
 
     // Determine the command to execute the code inside the container
+    // This method passes the code directly as a command argument
     const cmd = language === 'python' 
         ? ['python', '-c', code] 
         : ['node', '-e', code];
@@ -38,7 +39,7 @@ app.post('/execute', async (req, res) => {
     try {
         console.log(`Attempting to run code for language: ${language} using image: ${imageName}`);
 
-        // Pull the image if it's not present (optional, but good practice)
+        // Pull the image if it's not present (good practice for first-time runs)
         await pullImage(imageName);
 
         // Create a new container
@@ -76,15 +77,10 @@ app.post('/execute', async (req, res) => {
         await container.start();
         console.log(`Container ${container.id.substring(0,12)} started.`);
 
-        // Wait for the container to finish, with a timeout
-        const waitResult = await container.wait({ timeout: 10000 }); // 10 second timeout
+        // Wait for the container to finish, with a 10-second timeout
+        await container.wait({ timeout: 10000 });
 
-        if (waitResult.StatusCode === null) {
-          // This can happen on timeout
-          throw new Error('Execution timed out.');
-        }
-
-        console.log(`Container finished with status code: ${waitResult.StatusCode}`);
+        console.log(`Container finished.`);
         
         // Send the captured output back to the client
         res.status(200).json({ output: output.trim() });
@@ -105,7 +101,7 @@ app.post('/execute', async (req, res) => {
     }
 });
 
-// Helper function to pull a Docker image
+// Helper function to pull a Docker image if it doesn't exist locally
 async function pullImage(imageName) {
     console.log(`Checking for image: ${imageName}`);
     const images = await docker.listImages({ filters: { reference: [imageName] } });
@@ -125,3 +121,4 @@ async function pullImage(imageName) {
 app.listen(port, () => {
     console.log(`Code execution server listening at http://localhost:${port}`);
 });
+
